@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import NavBar from "../Layout/NavBar";
 import CardForm from "./CardForm";
 import { readDeck } from "../utils/api";
 
 export default function AddCard() {
-  const { deckId, cardId } =useParams();
+  const { deckId } = useParams();
   const [deck, setDeck] = useState({});
-
 
   useEffect(() => {
     const abortCon = new AbortController();
@@ -18,15 +17,12 @@ export default function AddCard() {
           setDeck({ ...gotDeck });
         }
       } catch (error) {
-        if (error.name !== "AbortError") {
-          throw error;
-        }
+        throw error;
       }
     }
     getDeck();
     return () => abortCon.abort;
   }, [deckId]);
-
 
   return (
     <>

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
-import { createCard, readCard, readDeck, updateCard } from "../utils/api";
+import { createCard, readCard, updateCard } from "../utils/api";
 
 export default function CardForm({ mode = "create" }) {
   const history = useHistory();
@@ -11,7 +11,8 @@ export default function CardForm({ mode = "create" }) {
   };
   const [formData, setFormData] = useState({ ...initialFormData });
 
-  const handleChange = ({ target }) => setFormData({ ...formData, [target.name]: target.value });
+  const handleChange = ({ target }) =>
+    setFormData({ ...formData, [target.name]: target.value });
 
   useEffect(() => {
     const abortCon = new AbortController();
@@ -20,15 +21,13 @@ export default function CardForm({ mode = "create" }) {
         const cardToEdit = await readCard(cardId, abortCon.signal);
         setFormData({ ...cardToEdit });
       } catch (error) {
-        if (error.name !== "AbortError") {
-          throw error;
-        }
+        throw error;
       }
     }
     if (mode === "edit") {
       getEditCard();
     }
-  }, [cardId]);
+  }, [cardId, mode]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -36,7 +35,7 @@ export default function CardForm({ mode = "create" }) {
     async function addCard() {
       try {
         await createCard(deckId, formData, abortCon.signal);
-        setFormData({...initialFormData});
+        setFormData({ ...initialFormData });
       } catch (error) {
         throw error;
       }
@@ -44,7 +43,7 @@ export default function CardForm({ mode = "create" }) {
     async function editCard() {
       try {
         await updateCard(formData, abortCon.signal);
-        history.push(`/decks/${deckId}`)
+        history.push(`/decks/${deckId}`);
       } catch (error) {
         throw error;
       }
@@ -80,10 +79,7 @@ export default function CardForm({ mode = "create" }) {
           />
         </div>
         <div className="row">
-          <Link
-            to={`/decks/${deckId}`}
-            className="btn btn-secondary mr-2"
-          >
+          <Link to={`/decks/${deckId}`} className="btn btn-secondary mr-2">
             {mode === "edit" ? "Cancel" : "Done"}
           </Link>
           <button type="submit" className="btn btn-primary">

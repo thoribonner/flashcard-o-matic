@@ -1,16 +1,11 @@
-import { useState } from "react";
+import React from "react";
 
 export default function Card({ card, count, index, flipped, flip, next }) {
-
   const nextButton = (
-    <button
-      type="button"
-      className="btn btn-primary"
-      onClick={next}
-    >
+    <button type="button" className="btn btn-primary" onClick={next}>
       Next
     </button>
-  )
+  );
   return (
     <>
       <div className="card">

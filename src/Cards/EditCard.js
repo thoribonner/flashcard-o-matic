@@ -1,16 +1,12 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import NavBar from "../Layout/NavBar";
 import { readDeck } from "../utils/api";
 import CardForm from "./CardForm";
 
-
 export default function EditCard() {
-
-  const { deckId, cardId } =useParams();
+  const { deckId, cardId } = useParams();
   const [deck, setDeck] = useState({});
-  const [card, setCard] = useState({});
-
 
   useEffect(() => {
     const abortCon = new AbortController();
@@ -21,16 +17,12 @@ export default function EditCard() {
           setDeck({ ...gotDeck });
         }
       } catch (error) {
-        if (error.name !== "AbortError") {
-          throw error;
-        }
+        throw error;
       }
     }
     getDeck();
     return () => abortCon.abort;
   }, [deckId]);
-
-  
 
   return (
     <>
@@ -46,5 +38,5 @@ export default function EditCard() {
         <CardForm mode="edit" />
       </div>
     </>
-  )
+  );
 }

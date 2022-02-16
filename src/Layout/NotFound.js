@@ -1,10 +1,12 @@
 import React from "react";
+import NavBar from "./NavBar";
 
 function NotFound() {
   return (
-    <div className="NotFound">
-      <h1>Not Found</h1>
-    </div>
+    <>
+      {/* <NavBar pageName="Not Found" /> */}
+      <h2>Not Found</h2>
+    </>
   );
 }
 

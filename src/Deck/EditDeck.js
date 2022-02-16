@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import NavBar from "../Layout/NavBar";
 import { readDeck } from "../utils/api";
@@ -18,9 +18,7 @@ export default function EditDeck() {
         const currentDeck = await readDeck(deckId, abortCon.signal);
         setDeck({ ...currentDeck });
       } catch (error) {
-        if (error.name !== "AbortError") {
-          throw error;
-        }
+        throw error;
       }
     }
     getCurrentDeck();

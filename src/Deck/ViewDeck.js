@@ -4,7 +4,7 @@ import { readDeck, deleteDeck } from "../utils/api";
 import NavBar from "../Layout/NavBar";
 import CardList from "../Cards/CardList";
 
-export default function Deck(handleDeckDelete) {
+export default function Deck() {
   const { deckId } = useParams();
   const history = useHistory();
   const { url } = useRouteMatch();
@@ -19,9 +19,7 @@ export default function Deck(handleDeckDelete) {
           setDeck({ ...gotDeck });
         }
       } catch (error) {
-        if (error.name !== "AbortError") {
-          throw error;
-        }
+        throw error;
       }
     }
     getDeck();
@@ -41,8 +39,7 @@ export default function Deck(handleDeckDelete) {
     } catch (error) {
       throw error;
     }
-  };
-
+  }
 
   if (deck.id) {
     return (
@@ -67,10 +64,7 @@ export default function Deck(handleDeckDelete) {
               >
                 <i className="fa-solid fa-book mr-1"></i> Study
               </Link>
-              <Link
-                className="btn btn-primary"
-                to={`${url}/cards/new`}
-              >
+              <Link className="btn btn-primary" to={`${url}/cards/new`}>
                 <i className="fa-solid fa-plus"></i> Add Cards
               </Link>
             </div>

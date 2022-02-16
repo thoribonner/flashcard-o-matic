@@ -1,10 +1,8 @@
-import { Link, useHistory } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import { deleteDeck } from "../utils/api/index.js";
 
 export default function DeckList({ decks }) {
-
-  const history = useHistory();
-
   async function handleDelete(id) {
     try {
       const result = window.confirm(
@@ -18,7 +16,7 @@ export default function DeckList({ decks }) {
     } catch (error) {
       throw error;
     }
-  };
+  }
 
   return (
     <>

@@ -1,8 +1,6 @@
+import React from "react";
 import NavBar from "../Layout/NavBar";
 import DeckForm from "./DeckForm";
-
-// * 2/15 create deck fully functioning
-
 
 export default function CreateDeck() {
   return (
