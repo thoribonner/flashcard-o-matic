@@ -3,7 +3,6 @@ import { Link, useHistory, useParams, useRouteMatch } from "react-router-dom";
 import { readDeck, deleteDeck } from "../utils/api";
 import NavBar from "../Layout/NavBar";
 import CardList from "../Cards/CardList";
-import NotFound from "../Layout/NotFound";
 
 export default function Deck() {
   const { deckId } = useParams();
@@ -42,50 +41,60 @@ export default function Deck() {
     }
   }
 
-  if (deck.id) {
-    return (
-      <>
-        <NavBar pageName={deck.name} />
-        <div className="d-flex flex-column">
+  return (
+    <>
+      <NavBar pageName={!deck.id ? "Loading Deck" : deck.name} />
+      {!deck.id ? (
+        <>
+          <h2>Loading deck...</h2>
+          <p>
+            Thank you for waiting while the selected deck is loaded. You will be
+            automatically redirected. If you are not redirected within fifteen
+            seconds, please return home and try again.
+          </p>
+        </>
+      ) : (
+        <>
           <div className="d-flex flex-column">
-            <h2>{deck.name}</h2>
-            <p>{deck.description}</p>
-          </div>
-          <div className="d-flex justify-content-between">
-            <div className="flex-item">
-              <Link
-                className="btn btn-secondary mr-2"
-                to={`/decks/${deck.id}/edit`}
-              >
-                <i className="fa-solid fa-pencil"></i> Edit
-              </Link>
-              <Link
-                className="btn btn-primary  mr-2"
-                to={`/decks/${deck.id}/study`}
-              >
-                <i className="fa-solid fa-book mr-1"></i> Study
-              </Link>
-              <Link className="btn btn-primary" to={`${url}/cards/new`}>
-                <i className="fa-solid fa-plus"></i> Add Cards
-              </Link>
+            <div className="d-flex flex-column">
+              <h2>{deck.name}</h2>
+              <p>{deck.description}</p>
             </div>
-            <div className="flex-item">
-              <button
-                className="btn btn-danger"
-                type="button"
-                onClick={() => handleDelete(deck.id)}
-              >
-                <i className="fa-solid fa-trash-can"></i>
-              </button>
+            <div className="d-flex justify-content-between">
+              <div className="flex-item">
+                <Link
+                  className="btn btn-secondary mr-2"
+                  to={`/decks/${deck.id}/edit`}
+                >
+                  <i className="fa-solid fa-pencil"></i> Edit
+                </Link>
+                <Link
+                  className="btn btn-primary  mr-2"
+                  to={`/decks/${deck.id}/study`}
+                >
+                  <i className="fa-solid fa-book mr-1"></i> Study
+                </Link>
+                <Link className="btn btn-primary" to={`${url}/cards/new`}>
+                  <i className="fa-solid fa-plus"></i> Add Cards
+                </Link>
+              </div>
+              <div className="flex-item">
+                <button
+                  className="btn btn-danger"
+                  type="button"
+                  onClick={() => handleDelete(deck.id)}
+                >
+                  <i className="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="d-flex flex-column mt-4">
-          <h2>Cards</h2>
-          <CardList cards={deck.cards} />
-        </div>
-      </>
-    );
-  }
-  return <NotFound />;
+          <div className="d-flex flex-column mt-4">
+            <h2>Cards</h2>
+            <CardList cards={deck.cards} />
+          </div>
+        </>
+      )}
+    </>
+  );
 }
