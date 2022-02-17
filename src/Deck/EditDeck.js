@@ -4,8 +4,6 @@ import NavBar from "../Layout/NavBar";
 import { readDeck } from "../utils/api";
 import DeckForm from "./DeckForm";
 
-// * 2/15 edit deck fully functioning
-
 export default function EditDeck() {
   const [deck, setDeck] = useState({});
 
@@ -22,6 +20,7 @@ export default function EditDeck() {
       }
     }
     getCurrentDeck();
+    return abortCon.abort();
   }, [deckId]);
 
   return (

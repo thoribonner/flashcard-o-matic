@@ -7,23 +7,19 @@ export default function Home() {
   const [decks, setDecks] = useState([]);
 
   useEffect(() => {
-    setDecks([]);
-
     const abortCon = new AbortController();
 
-    async function prepDecks() {
+    async function loadDecks() {
       try {
-        const preppedDecks = await listDecks();
-        setDecks([...preppedDecks]);
+        const loadedDecks = await listDecks();
+        setDecks([...loadedDecks]);
       } catch (error) {
         if (error.name !== "AbortError") {
           throw error;
         }
       }
     }
-
-    prepDecks();
-
+    loadDecks();
     return abortCon.abort();
   }, []);
 

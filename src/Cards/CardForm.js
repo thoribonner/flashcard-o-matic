@@ -27,6 +27,7 @@ export default function CardForm({ mode = "create" }) {
     if (mode === "edit") {
       getEditCard();
     }
+    return abortCon.abort();
   }, [cardId, mode]);
 
   const handleSubmit = (event) => {

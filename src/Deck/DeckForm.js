@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { createDeck, readDeck, updateDeck } from "../utils/api";
 
-// * 2/15 deck form fully functioning
-
 export default function DeckForm({ mode }) {
   const history = useHistory();
   const { deckId } = useParams();
@@ -33,6 +31,7 @@ export default function DeckForm({ mode }) {
     if (mode === "edit") {
       getEditDeck();
     }
+    return abortCon.abort();
   }, [deckId, mode]);
 
   const handleSubmit = (event) => {

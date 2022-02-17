@@ -3,6 +3,7 @@ import { Link, useHistory, useParams, useRouteMatch } from "react-router-dom";
 import { readDeck, deleteDeck } from "../utils/api";
 import NavBar from "../Layout/NavBar";
 import CardList from "../Cards/CardList";
+import NotFound from "../Layout/NotFound";
 
 export default function Deck() {
   const { deckId } = useParams();
@@ -86,5 +87,5 @@ export default function Deck() {
       </>
     );
   }
-  return "No deck";
+  return <NotFound />;
 }
