@@ -4,6 +4,7 @@ import NavBar from "../Layout/NavBar";
 import { readDeck } from "../utils/api";
 import Card from "../Cards/Card";
 import NotEnoughCards from "../Cards/NotEnoughCards";
+import NotFound from "../Layout/NotFound";
 
 export default function Study() {
   const [deck, setDeck] = useState({});
@@ -12,6 +13,7 @@ export default function Study() {
   const [card, setCard] = useState({});
   const [nextIndex, setNextIndex] = useState(1);
   const [flipped, setFlipped] = useState(false);
+  const [error, setError] = useState([]);
 
   const { deckId } = useParams();
   const history = useHistory();
@@ -27,12 +29,14 @@ export default function Study() {
           setCards([...gotDeck.cards]);
           setCard({ ...gotDeck.cards[0] });
         }
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          setError((currErr) => [...currErr, err]);
+        }
       }
     }
     getDeck();
-    return () => abortCon.abort;
+    return () => abortCon.abort();
   }, [deckId]);
 
   const reset = () => {
@@ -57,6 +61,8 @@ export default function Study() {
       response ? reset() : history.push("/");
     }
   };
+
+  if (error[0]) return <NotFound />;
 
   return (
     <>

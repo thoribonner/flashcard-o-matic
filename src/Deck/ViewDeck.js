@@ -3,12 +3,14 @@ import { Link, useHistory, useParams, useRouteMatch } from "react-router-dom";
 import { readDeck, deleteDeck } from "../utils/api";
 import NavBar from "../Layout/NavBar";
 import CardList from "../Cards/CardList";
+import NotFound from "../Layout/NotFound";
 
 export default function Deck() {
   const { deckId } = useParams();
   const history = useHistory();
   const { url } = useRouteMatch();
   const [deck, setDeck] = useState({});
+  const [error, setError] = useState([]);
 
   useEffect(() => {
     const abortCon = new AbortController();
@@ -18,12 +20,14 @@ export default function Deck() {
           const gotDeck = await readDeck(deckId, abortCon.signal);
           setDeck({ ...gotDeck });
         }
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          setError((currErr) => [...currErr, err]);
+        }
       }
     }
     getDeck();
-    return () => abortCon.abort;
+    return () => abortCon.abort();
   }, [deckId]);
 
   async function handleDelete(id) {
@@ -36,21 +40,23 @@ export default function Deck() {
         await deleteDeck(id, abortCon.signal);
         history.push("/");
       }
-    } catch (error) {
-      throw error;
+    } catch (err) {
+      setError(currErr => [...currErr, err]);
     }
   }
 
+  if (error[0]) return <NotFound />;
+
   return (
     <>
-      <NavBar pageName={!deck.id ? "Loading Deck" : deck.name} />
+      <NavBar pageName={deck.name} />
       {!deck.id ? (
         <>
           <h2>Loading deck...</h2>
           <p>
             Thank you for waiting while the selected deck is loaded. You will be
-            automatically redirected. If you are not redirected within fifteen
-            seconds, please return home and try again.
+            automatically redirected. If you are not redirected quickly, please
+            return home and try again.
           </p>
         </>
       ) : (

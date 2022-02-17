@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function NavBar({
   linkName = "",
   link = "",
-  pageName = "Page Name",
+  pageName = "Hmmmm...",
 }) {
   const multi = (
     <>

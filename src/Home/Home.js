@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DeckList from "../Deck/DeckList";
+import NotFound from "../Layout/NotFound";
 import { listDecks } from "../utils/api";
 
 export default function Home() {
   const [decks, setDecks] = useState([]);
+  const [error, setError] = useState([]);
+
 
   useEffect(() => {
     const abortCon = new AbortController();
@@ -13,15 +16,17 @@ export default function Home() {
       try {
         const loadedDecks = await listDecks();
         setDecks([...loadedDecks]);
-      } catch (error) {
-        if (error.name !== "AbortError") {
-          throw error;
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          setError((currErr) => [...currErr, err]);
         }
       }
     }
     loadDecks();
     return abortCon.abort();
   }, []);
+
+  if (error[0]) return <NotFound />;
 
   return (
     <div className="d-flex flex-column">

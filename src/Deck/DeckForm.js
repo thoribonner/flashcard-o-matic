@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
+import NotFound from "../Layout/NotFound";
 import { createDeck, readDeck, updateDeck } from "../utils/api";
 
 export default function DeckForm({ mode }) {
@@ -11,6 +12,7 @@ export default function DeckForm({ mode }) {
     description: "",
   };
   const [formData, setFormData] = useState({ ...initialFormData });
+  const [error, setError] = useState([]);
 
   const handleChange = ({ target }) =>
     setFormData({ ...formData, [target.name]: target.value });
@@ -22,16 +24,16 @@ export default function DeckForm({ mode }) {
       try {
         const deckToEdit = await readDeck(deckId, abortCon.signal);
         setFormData({ ...deckToEdit });
-      } catch (error) {
-        if (error.name !== "AbortError") {
-          throw error;
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          setError((currErr) => [...currErr, err]);
         }
       }
     }
     if (mode === "edit") {
       getEditDeck();
     }
-    return abortCon.abort();
+    return () => abortCon.abort();
   }, [deckId, mode]);
 
   const handleSubmit = (event) => {
@@ -42,9 +44,9 @@ export default function DeckForm({ mode }) {
         const createdDeck = await createDeck(formData, abortCon.signal);
         setFormData({ ...initialFormData });
         history.push(`/decks/${createdDeck.id}`);
-      } catch (error) {
-        if (error.name !== "AbortError") {
-          throw error;
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          setError((currErr) => [...currErr, err]);
         }
       }
     }
@@ -52,12 +54,15 @@ export default function DeckForm({ mode }) {
       try {
         await updateDeck(formData, abortCon.signal);
         history.push(`/decks/${deckId}`);
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        setError((currErr) => [...currErr, err]);
       }
     }
     mode === "create" ? createNewDeck() : editDeck();
+    return () => abortCon.abort();
   };
+
+  if (error[0]) return <NotFound />;
 
   return (
     <div className="d-flex flex-column">

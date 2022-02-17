@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
+import NotFound from "../Layout/NotFound";
 import { createCard, readCard, updateCard } from "../utils/api";
 
 export default function CardForm({ mode = "create" }) {
@@ -10,6 +11,7 @@ export default function CardForm({ mode = "create" }) {
     back: "",
   };
   const [formData, setFormData] = useState({ ...initialFormData });
+  const [error, setError] = useState([]);
 
   const handleChange = ({ target }) =>
     setFormData({ ...formData, [target.name]: target.value });
@@ -20,14 +22,16 @@ export default function CardForm({ mode = "create" }) {
       try {
         const cardToEdit = await readCard(cardId, abortCon.signal);
         setFormData({ ...cardToEdit });
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          setError((currErr) => [...currErr, err]);
+        }
       }
     }
     if (mode === "edit") {
       getEditCard();
     }
-    return abortCon.abort();
+    return () => abortCon.abort();
   }, [cardId, mode]);
 
   const handleSubmit = (event) => {
@@ -37,20 +41,22 @@ export default function CardForm({ mode = "create" }) {
       try {
         await createCard(deckId, formData, abortCon.signal);
         setFormData({ ...initialFormData });
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        setError((currErr) => [...currErr, err]);
       }
     }
     async function editCard() {
       try {
         await updateCard(formData, abortCon.signal);
         history.push(`/decks/${deckId}`);
-      } catch (error) {
-        throw error;
+      } catch (err) {
+        setError((currErr) => [...currErr, err]);
       }
     }
     mode === "edit" ? editCard() : addCard();
   };
+
+  if (error[0]) return <NotFound />;
 
   return (
     <div className="d-flex flex-column">
