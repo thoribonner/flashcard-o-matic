@@ -3,7 +3,7 @@ import NavBar from "../Layout/NavBar";
 import DeckForm from "./DeckForm";
 
 export default function CreateDeck() {
-// pure
+
   return (
     <>
       <div className="d-flex">
