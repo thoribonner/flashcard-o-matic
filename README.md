@@ -1,6 +1,6 @@
 # Flashcard-o-matic
 
-[view live app here]tbd)
+[view live app here](https://flashcard-o-matic-black.vercel.app/)
 
 ## Table of Contents
 - [Description](#description)
