@@ -2,10 +2,11 @@
 ### Capstone project for Front-End section of Thinkful's Software Engineering Program.
 
 ## Table of Contents
-[Description](#description)<br>
-[Technical](#technical)<br>
-[Installation Instructions](#installation-instructions)<br>
-[Troubleshooting](#troubleshooting)<br>
+- [Description](#description)
+- [Screenshots](#screenshots)
+- [Technical](#technical)
+- [Installation Instructions](#installation-instructions)
+- [Troubleshooting](#troubleshooting)
 
 ## Description
 This project focused on utilizing React hooks, reusable components, and passing props to components to build a web application that can dynamically share and preserve data that is fetched from an API. This web application allows users to create a flashcard deck, cards for their deck, click through their deck to study the cards, and edit or delete their decks and cards.
