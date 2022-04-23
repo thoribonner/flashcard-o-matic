@@ -1,5 +1,6 @@
 # Thinkful-Flashcard-App
-### Capstone project for Front-End section of Thinkful's Software Engineering Program.
+
+[view live app here](https://thoribonner.github.io/flashcard-o-matic/)
 
 ## Table of Contents
 - [Description](#description)
