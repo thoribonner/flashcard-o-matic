@@ -1,6 +1,6 @@
-# Thinkful-Flashcard-App
+# Flashcard-o-matic
 
-[view live app here](https://thoribonner.github.io/flashcard-o-matic/)
+[view live app here]tbd)
 
 ## Table of Contents
 - [Description](#description)
